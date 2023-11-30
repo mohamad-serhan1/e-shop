@@ -10,7 +10,7 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()( //When using zustand with TypeScript, you should use the curried version of create<T>(...) as stated in the first paragraph of the docs.
-  persist(
+  persist( //af
     (set) => (
       {
         isAuthenticated: false,
