@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import signUp from "./signupModal";
+import { useAuthStore } from "@/components/auth-userId";
 
 export default function Login() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, setIsAuthenticated, setUserId } = useAuthStore(); // Use Zustand store
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -14,9 +14,9 @@ export default function Login() {
   const { push } = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated == true) {
       // Redirect to home page after authentication
-      push("/");
+      window.location.reload();
     }
   }, [isAuthenticated, push]);
 
@@ -41,17 +41,20 @@ export default function Login() {
       });
 
       const data = await res.json();
-      if (data.message === "Authenticated") setIsAuthenticated(true);
+      console.log(data);
+      if (data.message === "Authenticated") {
+        setIsAuthenticated(true);
+        setUserId(data.userId);
+      }
       //if (data.user) // set global user state = data.user
 
       console.log(isAuthenticated);
-
     } catch (error) {
       console.error("Error during authentication:", error);
     }
   };
 
-  if (isAuthenticated) {
+  if (isAuthenticated == true) {
     return null;
   }
   return (

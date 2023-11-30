@@ -1,12 +1,66 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import QuantityInput from "../ui/quantity";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "../auth-userId";
+import { useState,useEffect } from "react";
 
+const ProductDetails = ({
+  data,
+  productId,
+}: {
+  data: any;
+  productId: any;
+}) => {
+  const { isAuthenticated, setIsAuthenticated } = useAuthStore();
+  const userId = useAuthStore.getState().userId;
 
-const ProductDetails = ({ data, onQuantityChange  }: { data: any; onQuantityChange: (newQuantity: number) => void  }) => {
-  const price =data.price
+  const router = useRouter();
+  if (!data || Object.keys(data).length === 0) {
+    return <div>Loading...</div>;
+  }
+  const price = data?.price;
+  
+  const [formData, setFormData] = useState<any>({
+    quantity: 1,
+    totalPrice: 0,
+    userId: userId,
+    productId: productId,
+  });
+
+  const onQuantityChange = (newQuantity: number) => {
+    if (data) {
+      const totalPrice = newQuantity * data?.price;
+      setFormData({
+        ...formData,
+        quantity: newQuantity,
+        totalPrice: totalPrice,
+      });
+      console.log(totalPrice);
+      // Update other state variables or perform necessary operations
+    }
+  };
+
+  const addToCart = async() => {
+    // get user id
+    try{
+
+      const products = await axios.post(
+        `http://localhost:3000/api/orders`,formData
+        );
+        alert("order submitted successfully")
+        return products.data;
+      }
+  catch(error) {
+        alert("Can't submit: " + error);
+      };
+      
+    router.push("/orders");
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-20 items-center justify-center">
@@ -35,13 +89,22 @@ const ProductDetails = ({ data, onQuantityChange  }: { data: any; onQuantityChan
           <Badge variant="outline">InStock</Badge>
         </div>
         <div className="border-t pt-3">
-          <QuantityInput pricePerItem={price} onQuantityChange={onQuantityChange} />
-          
+          <QuantityInput
+            pricePerItem={price}
+            onQuantityChange={onQuantityChange}
+          />
         </div>
         <div className="pt-3">
-          <Button className="w-2/3" variant="default">
-            Add to Cart
-          </Button>
+          {isAuthenticated == true && (
+            <Button onClick={addToCart} className="w-2/3" variant="default">
+              Add to Cart
+            </Button>
+          )}
+          {isAuthenticated == false && (
+            <Button disabled className="w-2/3" variant="default">
+              Add to Cart
+            </Button>
+          )}
         </div>
       </div>
     </div>

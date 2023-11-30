@@ -1,7 +1,13 @@
-"use client"
-import React,{useState,useEffect} from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
-const QuantityInput = ({ pricePerItem,onQuantityChange  }: { pricePerItem: number; onQuantityChange: (newQuantity: number) => void }) => {
+const QuantityInput = ({
+  pricePerItem,
+  onQuantityChange,
+}: {
+  pricePerItem: number;
+  onQuantityChange: (newQuantity: number) => void;
+}) => {
   const [quantity, setQuantity] = useState(1);
 
   const increment = () => {
@@ -20,7 +26,7 @@ const QuantityInput = ({ pricePerItem,onQuantityChange  }: { pricePerItem: numbe
   useEffect(() => {
     // Invoke the onQuantityChange callback whenever the quantity changes
     onQuantityChange(quantity);
-  }, [quantity, onQuantityChange]);
+  }, [quantity]); //render only the quantity
 
   return (
     <div className="flex gap-2">
@@ -37,7 +43,6 @@ const QuantityInput = ({ pricePerItem,onQuantityChange  }: { pricePerItem: numbe
         onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
         min="1"
         disabled
-
       />
       <button className="border-[1.5px] px-2" onClick={increment}>
         +

@@ -1,90 +1,49 @@
-"use client"
 import React from "react";
 import Container from "@/components/Container";
 import ProductDetails from "../../../components/product/ProductDetails";
+import axios from "axios";
 
-export default async function Page({ params: { productId } }: { params: { productId: any } }) {
-  let formData = {
-    quantity: 0,
-    totalPrice: 0,
-    userId: "",
-    productId: productId,
-  };
-
-  async function prodDetails() {
-    const res = await fetch(`http://localhost:3000/api/products/${productId}`, {
-      next: {
-        revalidate: 10,
-      },
-    });
-    
-    const data = await res.json();
-    return data.products;
-  }
-  async function usercheck() {
-    const res = await fetch(`http://localhost:3000/api/token`, {
-      next: {
-        revalidate: 10,
-      },
-    });
-    
-    const data = await res.json();
-    console.log(data)
-    return data;
-  }
-
-
-
-  const product = await prodDetails();
-  // const checkToken =await usercheck();
-
-  const handleQuantityChange = async (newQuantity: number) => {
-    const product = await prodDetails();
-
-    if (product) {
-      formData = {
-        ...formData,
-        quantity: newQuantity,
-        totalPrice: newQuantity * product.price,
-       
-      };
-      console.log(newQuantity * product.price)
-
-
-      // try {
-      //   const orderData = {
-      //     quantity: newQuantity,
-      //     totalPrice: newQuantity * product.price,
-      //     userId: "", // Replace with actual user ID
-      //     productId: productId,
-      //   };
-
-      //   const res = await fetch(`http://localhost:3000/api/orders`, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(orderData),
-      //   });
-
-      //   if (res.ok) {
-      //     const data = await res.json();
-      //     console.log("Order placed:", data);
-      //   } else {
-      //     console.error("Failed to place order");
-      //   }
-      // } catch (error) {
-      //   console.error("Error placing order:", error);
-      // }
+export default async function Page({
+  params: { productId },
+}: {
+  params: { productId: any };
+}) {
+  const getProducts = async (productId: any) => {
+    try {
+      // get user id
+      const products = await axios.get(
+        `http://localhost:3000/api/products/${productId}`
+      );
+      return products.data;
+    } catch (error) {
+      console.error("Error");
     }
   };
+  const product = await getProducts(productId);
+
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:3000/api/products/${productId}`)
+  //     .then((res) => {
+  //       setProduct(res.data.products);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching product:", error);
+  //     });
+  // }, [productId]); // Include productId as a dependency to fetch data when it changes, and setProduct to prevent rendering
+
+  
 
   return (
     <div className="p-8">
-
       <Container>
         <div>
-          <ProductDetails data={product} onQuantityChange={handleQuantityChange} />
+          <ProductDetails
+            data={product.products}
+            productId={productId}
+          />
+          
         </div>
       </Container>
     </div>

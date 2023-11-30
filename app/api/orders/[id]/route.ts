@@ -8,7 +8,7 @@ export const GET = async (req: Request, res: NextResponse) => {
     const orders = await prisma.order.findFirst({
       where: { id },
       include: {
-        product: { select: { name: true } },
+        Product: { select: { name: true } },
       },
     });
     if (!orders) {

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useAuthStore } from "../auth-userId";
 
 
 const shoppingCart = ({ data }: { data: any }) => {
@@ -19,13 +20,18 @@ const shoppingCart = ({ data }: { data: any }) => {
     "
     >
       <div className="flex flex-row gap-4  border-b">
-        <div className="basis-1/2">
-          <div className="flex flex-row gap-1 ">
-
-        <Image className="p-2"  src={data.Product.image} alt={data.Product.name} width={100} height={100} />
-          <p className="flex items-center">{data.Product.name}</p>
+        
+          <div className="flex flex-row gap-1 basis-1/2 ">
+            <Image
+              className="p-2"
+              src={data.Product.image}
+              alt={data.Product.name}
+              width={100}
+              height={100}
+            />
+            <p className="flex items-center">{data.Product.name}</p>
           </div>
-        </div>
+       
 
         <div className=" flex flex-row flex-grow justify-between items-center">
           <p>{data.Product.price}$</p>

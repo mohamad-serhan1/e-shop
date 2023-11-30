@@ -17,6 +17,8 @@ export default function Logout() {
       if (response.ok) {
         // Remove the token/cookie from the client-side
         // Redirect to the desired page after successful logout
+        localStorage.clear();
+        window.location.reload();
         router.push("/");
       } else {
         console.error('Failed to logout');
