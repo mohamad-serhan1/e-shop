@@ -1,15 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import axios from "axios";
 
 export async function fetchCategories() {
-  const res = await fetch("http://localhost:3000/api/category", {
-    next: {
-      revalidate: 10,
-    },
-  });
-  const data = await res.json();
-  return data.categories;
+  const res = await axios.get("http://localhost:3000/api/category" );
+  console.log(res.data)
+  return res.data.categories;
 }
+
 
 export default async function Category() {
   const categories = await fetchCategories();

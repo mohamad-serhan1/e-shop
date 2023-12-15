@@ -10,7 +10,6 @@ const fetchProd = async() => {
     const products = await axios.get(
       `http://localhost:3000/api/products`
       );
-      console.log(products.data)
       return products.data.products;
     }
 catch(error) {
