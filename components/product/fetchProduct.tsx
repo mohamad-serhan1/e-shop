@@ -19,7 +19,7 @@ catch(error) {
 
 export default async function Fetch() {
   const products = await fetchProd();
-
+ console.log(products)
   return (
     <main className="flex-grow  flex-col items-center pt-10 text-gray-600">
       <Container>
