@@ -21,9 +21,9 @@ export default async function Category() {
             href={`/categories/${category.name}`}
             className="inline  transition-all duration-200 flex-shrink-0 hover:text-red-600 hover:shadow-inner"
           >
-           <a className="inline transition-all duration-200 flex-shrink-0 hover:text-red-600 hover:shadow-inner">
+           <p className="inline transition-all duration-200 flex-shrink-0 hover:text-red-600 hover:shadow-inner">
               {category.name}
-            </a>
+            </p>
           </Link>
         ))}
       </div>
