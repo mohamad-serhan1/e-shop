@@ -4,17 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "builds": [
-      {
-        "src": "path/to/your/app",
-        "use": "@vercel/node"
-      },
-      {
-        "src": "prisma",
-        "use": "@prisma/cli"
-      }
-    ],
-    "version": 2,
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
