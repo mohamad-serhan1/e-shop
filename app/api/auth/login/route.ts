@@ -35,11 +35,10 @@ export const POST = async (req: Request, res: NextResponse) => {
 
    
 
-  return new Response(JSON.stringify(response), {
-    status: 200,
+  return NextResponse.json({ message: "Authenticated", user, userId: user.id }, {
     headers: {
       "Set-Cookie": cookie,
     },
   });
-
+  
 };
