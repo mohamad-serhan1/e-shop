@@ -23,7 +23,7 @@ const productCard = ({ data }: { data: any }) => {
       <Link href={`/Product/${data.id}`}>
         <div className="flex flex-col items-center w-full gap-1">
           <div className="aspect-square overflow-hidden relative w-full text-black">
-            <Image src={data.image} alt={data.name} width={500} height={500} />
+            <Image objectFit="cover" className="w-full h-full" src={data.image} alt={data.name} width={500} height={500} />
           </div>
           <div className="">{data.name}</div>
           <div className="bg-black text-white w-full">{data.price}$</div>
